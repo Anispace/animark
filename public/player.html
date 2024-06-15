@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://kit.fontawesome.com/45cb819601.js" crossorigin="anonymous"></script>
+    <style media="screen">
+    #controls {
+    position: absolute;
+    top: 3.6vh;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1000; /* Ensure the controls are on top of the iframe */
+}
+
+#backButton {
+    padding: 15px 20px;
+    border-radius: 100vh;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#title {
+    font-size: 32px;
+    color: white;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    padding: 10px 20px;
+}
+
+#controls:hover {
+    opacity: 1;
+}
+body:hover  #controls {
+    opacity: 1;
+}
+
+#downloadButton {
+    position: absolute;
+    top: 3.6vh;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 1000; /* Ensure the button is on top of the iframe */
+}
+
+body:hover  #controls, body:hover  #controls  #downloadButton {
+    opacity: 1;
+}
+      body {
+        margin: 0;
+        padding-top: 0 !important;
+        color: white;
+        background-color: black;
+      }
+      iframe {
+          position: absolute;
+          top:3.4vh;
+          left: 0;
+          width: 100%;
+          height: 96.6%;
+          border: none;
+      }
+      .server {
+        display: none;
+      }
+      /* Modal styles */
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 1001;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+          background-color: white;
+          margin: 15% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+          max-width: 500px;
+      }
+
+      .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+      }
+    </style>
+    <!-- NOTE: remove this and replace with real css during prod -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        *{user-select: none;}
+        .window-control:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .window-control.close:hover {
+            background-color: rgba(255, 0, 0, 0.7);
+        }
+        .drag {
+            -webkit-app-region: drag;
+        }
+        .no-drag {
+            -webkit-app-region: no-drag;
+        }
+    </style>
+</head>
+
+<body>
+  <div class="flex flex-col h-screen">
+      <!-- Custom Title Bar -->
+      <div class="w-full bg-gray-800 h-6 flex items-center justify-between drag p-0th">
+          <div class="flex-1 px-4">
+              <span>{{ title }} |Animark</span>
+          </div>
+          <div class="flex items-center space-x-2 no-drag">
+              <button id="minimize" class="window-control w-4 h-4 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                  <path fill-rule="evenodd" d="M4.25 12a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+                </svg>
+
+              </button>
+              <button id="maximize" class="window-control w-4 h-4 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
+                </svg>
+
+              </button>
+              <button id="close" class="window-control close w-4 h-4  flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+          </div>
+      </div>
+        <div id="video">
+          <div id="controls">
+              <button id="backButton" onclick="window.history.go(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+              <span id="title">{{ title }}</span>
+          </div>
+              <button id="downloadButton">Download</button>
+              <button id="downloadButton">Download</button>
+              <div id="downloadModal" class="modal">
+                  <div class="modal-content">
+                      <span class="close">&times;</span>
+                      <h2>Select a file to download</h2>
+                      <ul>
+                          <li><a href="#" data-file="file1.mp4">File 1</a></li>
+                          <li><a href="#" data-file="file2.mp4">File 2</a></li>
+                          <li><a href="#" data-file="file3.mp4">File 3</a></li>
+                          <li><a href="#" data-file="file4.mp4">File 4</a></li>
+                      </ul>
+                  </div>
+              </div>
+              <iframe id="videoL" src="" style="border: 0px #ffffff none" scrolling="no" frameborder="0"
+                    marginheight="0px" marginwidth="0px" allowfullscreen></iframe>
+        </div>
+
+        <div id="server_main">
+            <div class="status">
+                <div class="scontent text-black">
+                  <b id="ep-name">{{ title }}</b>
+                </div>
+            </div>
+
+            <div class="server">
+                <div class="stitle">
+                    <i class="fa fa-microphone"></i>
+
+                    Servers:
+                </div>
+                <div id="serversbtn" class="slist"></div>
+            </div>
+        </div>
+    </section>
+  </div>
+
+
+    <script >
+      const animeapi = "https://api-v2.anispace.workers.dev/anime/";
+      const episodeapi = "https://api-v2.anispace.workers.dev/episode/";
+      // const dlapi = "https://api-v2.anispace.workers.dev/download/";
+
+      // Usefull functions
+
+      async function getJson(url) {
+          try {
+              const response = await fetch(url);
+              return await response.json();
+          } catch (errors) {
+              console.error(errors);
+          }
+      }
+
+      function sentenceCase(str) {
+          if (str === null || str === "") return false;
+          else str = str.toString();
+
+          return str.replace(/\w\S*/g, function (txt) {
+              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
+      }
+
+      function capitalizeFirstLetter(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+      // Function to get m3u8 url of episode
+      async function loadVideo(name, stream) {
+          try {
+              document.getElementById("ep-name").innerHTML = name;
+              const serversbtn = document.getElementById("serversbtn");
+
+              let url = stream["sources"][0]["file"];
+              serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="./embed.html?url=${url}">AD Free 1</a> </div>`;
+              document.getElementsByClassName("sactive")[0].click();
+
+              url = stream["sources_bk"][0]["file"];
+              serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="./embed.html?url=${url}">AD Free 2</a> </div>`;
+
+              return true;
+          } catch (err) {
+              return false;
+          }
+      }
+
+      // Function to available servers
+      async function loadServers(servers, success = true) {
+          console.log(servers);
+          const serversbtn = document.getElementById("serversbtn");
+
+          html = "";
+
+          for (let [key, value] of Object.entries(servers)) {
+              key = capitalizeFirstLetter(key);
+              html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${value}">${key}</a> </div>`;
+          }
+          serversbtn.innerHTML += html;
+
+          if (success == false) {
+              document.getElementsByClassName("sobtn")[0].click();
+          }
+      }
+
+      // Function to select server
+      function selectServer(btn) {
+          const buttons = document.getElementsByClassName("sobtn");
+          const iframe = document.getElementById("videoL");
+          iframe.src = btn.getAttribute("data-value");
+          for (let i = 0; i < buttons.length; i++) {
+              buttons[i].className = "sobtn";
+          }
+          btn.className = "sobtn sactive";
+      }
+
+      // Function to get download links
+      // async function getDownloadLinks(anime, episode) {
+      //     const data = (await getJson(dlapi + anime + "-episode-" + episode))[
+      //         "results"
+      //     ];
+      //     let html = "";
+      //
+      //     for (const [key, value] of Object.entries(data)) {
+      //         const quality = key.split("x")[1];
+      //         const url = value;
+      //         html += `<div class="sitem"> <a class="sobtn download" target="_blank" href="${url}"><i class="fa fa-download"></i>${quality}p</a> </div>`;
+      //     }
+      //     document.getElementById("dllinks").innerHTML = html;
+      // }
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+
+      if (urlParams.get("anime") == null || urlParams.get("episode") == null) {
+          window.location = "./index.html";
+      }
+
+      // Running functions
+
+      async function loadEpisodeData(data) {
+          data = data["results"];
+          const name = data["name"];
+          const episodes = data["episodes"];
+          const stream = data["stream"];
+          const servers = data["servers"];
+
+          document.documentElement.innerHTML =
+              document.documentElement.innerHTML.replaceAll("{{ title }}", name);
+
+          try {
+              loadVideo(name, stream).then(() => {
+                  console.log("Video loaded");
+                  loadServers(servers, true).then(() => {
+                      console.log("Servers loaded");
+                  });
+              });
+          } catch (err) {
+              loadServers(servers, false).then(() => {
+                  console.log("Servers loaded");
+              });
+          }
+      }
+
+      getJson(
+          episodeapi + urlParams.get("anime") + "-episode-" + urlParams.get("episode")
+      ).then((data) => {
+          loadEpisodeData(data).then(() => {
+          });
+      });
+
+
+// mooodoaal
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

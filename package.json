@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "electron-installer": "^1.0.3",
+    "electron-squirrel-startup": "^1.0.1",
+    "electron-winstaller": "^5.3.1",
+    "plyr": "^3.7.8"
+  },
+
+
+
+  "name": "animark",
+  "version": "0.0.0",
+  "description": "..",
+  "main": "main.js",
+  "repository": "...",
+  "author": "....",
+  "license": "MIT",
+  "private": false,
+  "trustedDependencies": [
+    "aws-sdk",
+    "core-js",
+    "electron-forge",
+    "spawn-sync"
+  ],
+  "devDependencies": {
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "electron": "31.0.1",
+    "electron-builder": "^24.13.3"
+  },
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  }
+}

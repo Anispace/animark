@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Sidebar with Title Bar</title>
+    <!-- NOTE: remove this and replace with real css during prod -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body,
+        html {
+          overflow: hidden;
+        }
+        *{user-select: none;}
+        .window-control:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .window-control.close:hover {
+            background-color: rgba(255, 0, 0, 0.7);
+        }
+        .drag {
+            -webkit-app-region: drag;
+        }
+        .no-drag {
+            -webkit-app-region: no-drag;
+        }
+
+        .modal {
+   display: none;
+}
+.modal.active {
+   display: block;
+}
+        /* Custom scrollbar styles for WebKit browsers (e.g., Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 7px ; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar:hover {
+    width: 12px !important; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #transparent!important; /* Color of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888 !important; /* Color of the scrollbar thumb */
+    border-radius: 6px !important; /* Rounded corners for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555 !important; /* Color of the scrollbar thumb when hovered */
+}
+
+/* Custom scrollbar styles for Firefox */
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="flex flex-col h-screen">
+        <!-- Custom Title Bar -->
+        <div class="w-full bg-gray-800 h-6 flex items-center justify-between drag p-0th">
+            <div class="flex-1 px-4">
+                <span>Animark</span>
+            </div>
+            <div class="flex items-center space-x-2 no-drag">
+                <button id="minimize" class="window-control w-4 h-4 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path fill-rule="evenodd" d="M4.25 12a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+                  </svg>
+
+                </button>
+                <button id="maximize" class="window-control w-4 h-4 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
+                  </svg>
+
+                </button>
+                <button id="close" class="window-control close w-4 h-4  flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Sidebar and Content -->
+        <div class="flex flex-1">
+            <!-- Sidebar -->
+            <div class="w-20 bg-gray-800 h-full flex flex-col items-center py-4 space-y-4">
+                <!-- Home/Logo Button -->
+                <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                  <a href="./index.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fff" viewBox="0 0 256 256"><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"></path></svg></a>
+                </div>
+                <!-- Navigation Items -->
+                <div class="space-y-4 px-4 py-0 w-full">
+                    <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                        <a href="./search"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path></svg></a>
+                    </div>
+                    <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                        <a href="./anime.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M216,104H102.09L210,75.51a8,8,0,0,0,5.68-9.84l-8.16-30a15.93,15.93,0,0,0-19.42-11.13L35.81,64.74a15.75,15.75,0,0,0-9.7,7.4,15.51,15.51,0,0,0-1.55,12L32,111.56c0,.14,0,.29,0,.44v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A8,8,0,0,0,216,104ZM192.16,40l6,22.07-22.62,6L147.42,51.83Zm-66.69,17.6,28.12,16.24-36.94,9.75L88.53,67.37Zm-79.4,44.62-6-22.08,26.5-7L94.69,89.4ZM208,200H48V120H208v80Z"></path></svg></a>
+                    </div>
+                    <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                        <a href="./manga.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M208,26H72A30,30,0,0,0,42,56V224a6,6,0,0,0,6,6H192a6,6,0,0,0,0-12H54v-2a18,18,0,0,1,18-18H208a6,6,0,0,0,6-6V32A6,6,0,0,0,208,26Zm-6,160H72a29.87,29.87,0,0,0-18,6V56A18,18,0,0,1,72,38H202Z"></path></svg></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Content -->
+
+            <div class=" max-h-screen overflow-y-scroll" id="scroll-container">
+              <main class="container mx-auto px-6 py-8">
+    <!-- Movie Poster and Details -->
+    <div class="flex flex-col lg:flex-row">
+        <!-- Poster -->
+        <!-- <div class="w-full lg:w-1/3"> -->
+            <img src="movie-poster.jpg" alt="Movie Poster" id="anieman" class="rounded-lg shadow-lg h-72">
+        <!-- </div> -->
+        <!-- Details -->
+        <div class="w-full lg:w-2/3 lg:pl-6 mt-6 lg:mt-0">
+            <h2 class="text-3xl font-bold mb-2" id="title">Movie Title</h2>
+            <!-- <p class="text-gray-400" id="release">Release Year: 2024</p> -->
+            <p class="text-gray-400 mt-2" id="genres">Genre: Drama, Thriller</p>
+            <p class="text-gray-400 mt-2" id="type">Type: TV</p>
+            <p class="text-gray-400 mt-4" id="plot_summary">Plot Summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <div class="mt-6">
+                <h1 class="btn py-2 px-4 rounded-lg hover:bg-gray-700">Watch Episode 1</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Dialog -->
+   <div id="dialogBox" class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+       <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+           <h2 class="text-2xl mb-4">Download Options</h2>
+           <div class="flex justify-between mb-4">
+               <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                   Option 1
+               </button>
+               <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                   Option 2
+               </button>
+               <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                   Option 3
+               </button>
+               <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                   Option 4
+               </button>
+           </div>
+           <button id="closeButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="document.getElementById('dialogBox').classList.remove('active')">
+               Close
+           </button>
+       </div>
+   </div>
+
+    <!-- Similar Movies -->
+    <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-4">Episodes</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="episode_co">
+            <!-- Movie Card -->
+
+            <!-- Repeat for other similar movies -->
+        </div>
+    </div>
+</main>
+
+        </div>
+    <script src="../src/get_info.js"></script>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        document.getElementById('minimize').addEventListener('click', () => {
+            ipcRenderer.send('window-minimize');
+        });
+
+        document.getElementById('maximize').addEventListener('click', () => {
+            ipcRenderer.send('window-maximize');
+        });
+
+        document.getElementById('close').addEventListener('click', () => {
+            ipcRenderer.send('window-close');
+        });
+        //
+        // fetch(`https://animark-api.vercel.app/meta/anilist-manga/read?chapterId=${query}/c100&provider=${provider}`)
+
+
+        const container = document.getElementById('scroll-container');
+
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        container.addEventListener('mousedown', (e) => {
+          isDown = true;
+          container.classList.add('active');
+          startX = e.pageX - container.offsetLeft;
+          scrollLeft = container.scrollLeft;
+        });
+
+        container.addEventListener('mouseleave', () => {
+          isDown = false;
+          container.classList.remove('active');
+        });
+
+        container.addEventListener('mouseup', () => {
+          isDown = false;
+          container.classList.remove('active');
+        });
+
+        container.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - container.offsetLeft;
+          const walk = (x - startX) * 2; // scroll-fast
+          container.scrollLeft = scrollLeft - walk;
+        });
+
+
+
+
+
+    </script>
+</body>
+</html>

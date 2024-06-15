@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Sidebar with Title Bar</title>
+    <!-- NOTE: remove this and replace with real css during prod -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        *{user-select: none;}
+        .window-control:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .window-control.close:hover {
+            background-color: rgba(255, 0, 0, 0.7);
+        }
+        .drag {
+            -webkit-app-region: drag;
+        }
+        .no-drag {
+            -webkit-app-region: no-drag;
+        }
+    </style>
+
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="flex flex-col h-screen">
+        <!-- Custom Title Bar -->
+        <div class="w-full bg-gray-800 h-6 flex items-center justify-between drag p-0th">
+            <div class="flex-1 px-4">
+                <span>Animark</span>
+            </div>
+            <div class="flex items-center space-x-2 no-drag">
+                <button id="minimize" class="window-control w-4 h-4 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path fill-rule="evenodd" d="M4.25 12a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+                  </svg>
+
+                </button>
+                <button id="maximize" class="window-control w-4 h-4 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
+                  </svg>
+
+                </button>
+                <button id="close" class="window-control close w-4 h-4  flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Sidebar and Content -->
+        <div class="flex flex-1">
+            <!-- Sidebar -->
+            <div class="w-20 bg-gray-800 h-full flex flex-col items-center py-4 space-y-4">
+                <!-- Home/Logo Button -->
+                <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                  <a href="./index.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fff" viewBox="0 0 256 256"><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"></path></svg></a>
+                </div>
+                <!-- Navigation Items -->
+                <div class="space-y-4 px-4 py-0 w-full">
+                    <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                        <a href="./search.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path></svg></a>
+                    </div>
+                    <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                        <a href="./anime.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M216,104H102.09L210,75.51a8,8,0,0,0,5.68-9.84l-8.16-30a15.93,15.93,0,0,0-19.42-11.13L35.81,64.74a15.75,15.75,0,0,0-9.7,7.4,15.51,15.51,0,0,0-1.55,12L32,111.56c0,.14,0,.29,0,.44v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A8,8,0,0,0,216,104ZM192.16,40l6,22.07-22.62,6L147.42,51.83Zm-66.69,17.6,28.12,16.24-36.94,9.75L88.53,67.37Zm-79.4,44.62-6-22.08,26.5-7L94.69,89.4ZM208,200H48V120H208v80Z"></path></svg></a>
+                    </div>
+                    <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                        <a href="./manga.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M208,26H72A30,30,0,0,0,42,56V224a6,6,0,0,0,6,6H192a6,6,0,0,0,0-12H54v-2a18,18,0,0,1,18-18H208a6,6,0,0,0,6-6V32A6,6,0,0,0,208,26Zm-6,160H72a29.87,29.87,0,0,0-18,6V56A18,18,0,0,1,72,38H202Z"></path></svg></a>
+                    </div>
+                    <div class="sidebar-icon w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 cursor-pointer">
+                        <a href="./local.html"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M208,26H72A30,30,0,0,0,42,56V224a6,6,0,0,0,6,6H192a6,6,0,0,0,0-12H54v-2a18,18,0,0,1,18-18H208a6,6,0,0,0,6-6V32A6,6,0,0,0,208,26Zm-6,160H72a29.87,29.87,0,0,0-18,6V56A18,18,0,0,1,72,38H202Z"></path></svg></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="flex-1 p-4">
+              <div class="w-full max-w-lg flex items-center space-x-4">
+                  <div class="relative flex-grow">
+                      <input id="search-input" type="text" class="w-full p-4 pl-12 pr-4 bg-gray-800 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search...">
+                      <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M21 21l-4.35-4.35M18.17 10.59A7.58 7.58 0 1110.59 3a7.58 7.58 0 017.58 7.58z"></path>
+                      </svg>
+                  </div>
+                  <div class="relative">
+                      <select id="type-select" class="w-full p-4 bg-gray-800 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          <option value="anime">Anime</option>
+                          <option value="manga">Manga</option>
+                      </select>
+                  </div>
+                  <button onclick="search()" class="p-4 bg-blue-500 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">Search</button>
+              </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        document.getElementById('minimize').addEventListener('click', () => {
+            ipcRenderer.send('window-minimize');
+        });
+
+        document.getElementById('maximize').addEventListener('click', () => {
+            ipcRenderer.send('window-maximize');
+        });
+
+        document.getElementById('close').addEventListener('click', () => {
+            ipcRenderer.send('window-close');
+        });
+
+      function getParameterByName(name) {
+          name = name.replace(/[\[\]]/g, '\\$&');
+          let url = window.location.href;
+          let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+          let results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+
+    function search() {
+        const type = document.getElementById('type-select').value;
+        const query = document.getElementById('search-input').value;
+        window.location.href = `?type=${type}&q=${encodeURIComponent(query)}`;
+
+        let typex = getParameterByName('type');
+        let q = getParameterByName('q');
+
+         if (type == 'anime') {
+           window.location.href = `./anime.html?ref=search&type=anime&q=${query}`
+         } else {
+           window.location.href = `./anime.html?ref=search&type=anime&q=${q}`
+
+         }
+    }
+  </script>
+</body>
+</html>
